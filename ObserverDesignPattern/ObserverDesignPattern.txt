@@ -1,0 +1,67 @@
+Observer Design Pattern
+- Observer Design Pattern là một design pattern thuộc nhóm Behavioral (hành vi), dùng để thiết lập mối quan hệ 1–n (one-to-many) giữa các object.
+ 👉 Khi 1 object thay đổi trạng thái, thì tất cả object phụ thuộc vào nó sẽ được thông báo tự động.
+
+Những trường hợp sử dụng Observer Pattern
+✔ 1. Một object thay đổi → nhiều object khác cần biết
+Notification system
+Realtime UI update
+✔ 2. Muốn giảm coupling (liên kết chặt)
+Không muốn class A biết chi tiết class B
+✔ 3. Event-driven system
+GUI (button click)
+Game event
+Message system
+
+💡 Sơ đồ đơn giản
+Subject
+  ├── addObserver()
+  ├── removeObserver()
+  └── notifyObservers()
+
+Observer
+  └── update()
+
+📌 Ví dụ code (Java)
+// Observer interface
+interface Observer {
+    void update(double price);
+}
+
+// Concrete Observer
+class MobileApp implements Observer {
+    public void update(double price) {
+        System.out.println("Mobile received: " + price);
+    }
+}
+
+// Subject
+class Stock {
+    private List<Observer> observers = new ArrayList<>();
+    private double price;
+
+    public void attach(Observer o) {
+        observers.add(o);
+    }
+
+    public void detach(Observer o) {
+        observers.remove(o);
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+        notifyObservers();
+    }
+
+    private void notifyObservers() {
+        for (Observer o : observers) {
+            o.update(price);
+        }
+    }
+}
+
+👉 Observer = Cơ chế “đăng ký theo dõi” (subscribe)
+
+Subject = người phát thông tin
+Observer = người nhận thông tin
+Khi Subject thay đổi → tự động notif

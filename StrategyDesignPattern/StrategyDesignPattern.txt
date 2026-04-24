@@ -1,0 +1,52 @@
+Strategy Design Pattern
+- Strategy Design Pattern là một mẫu thiết kế hành vi (behavioral pattern) 
+  dùng để đóng gói các thuật toán (strategy) khác nhau và cho phép bạn thay đổi thuật toán linh hoạt khi chương trình đang chạy.
+
+Những trường hợp sử dụng Strategy Pattern 
+
+1. Có nhiều thuật toán thay thế nhau
+Ví dụ:
+Sắp xếp: QuickSort, MergeSort, BubbleSort
+Thanh toán: Visa, Momo, PayPal
+
+2. Muốn thay đổi hành vi runtime
+service.setStrategy(new PaypalPayment());
+
+3. Tránh if-else dài dòng
+if(type == A) ...
+else if(type == B) ...
+
+🚀 Ví dụ thực tế hơn
+Sắp xếp (Sorting Strategy)
+
+Code: 
+
+public interface SortStrategy {
+    void sort(int[] arr);
+}
+
+public class BubbleSort implements SortStrategy {
+    public void sort(int[] arr) {
+        System.out.println("Bubble sort");
+    }
+}
+
+public class QuickSort implements SortStrategy {
+    public void sort(int[] arr) {
+        System.out.println("Quick sort");
+    }
+}
+
+public class SortContext {
+    private SortStrategy strategy;
+
+    public void setStrategy(SortStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public void sort(int[] arr) {
+        strategy.sort(arr);
+    }
+}
+
+👉 Strategy Pattern = "Tách các thuật toán ra thành các class riêng và cho phép thay đổi linh hoạt"

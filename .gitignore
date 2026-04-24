@@ -1,0 +1,24 @@
+# Build results
+bin/
+obj/
+
+# VS Code / Visual Studio
+.vscode/
+.vs/
+
+# User files
+*.user
+*.suo
+
+# Build outputs
+*.dll
+*.exe
+*.pdb
+
+# NuGet
+*.nupkg
+project.assets.json
+
+# Others
+*.cache
+*.log

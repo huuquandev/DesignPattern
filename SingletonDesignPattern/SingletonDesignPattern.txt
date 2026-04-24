@@ -1,0 +1,63 @@
+Singleton Design Pattern
+- Singleton là một design pattern đảm bảo rằng:
+  Một class chỉ có đúng 1 instance (1 object duy nhất)
+  Và cung cấp một điểm truy cập toàn cục (global access) tới instance đó
+ 👉 Hiểu đơn giản: “Trong toàn bộ chương trình, class này chỉ được tạo đúng 1 object thôi.”
+
+Những trường hợp sử dụng Singleton Design Pattern
+- Chỉ cần 1 instance duy nhất
+- Object đó được dùng ở nhiều nơi
+✔ Ví dụ:
+Logger
+Cache manager
+Config system
+Thread pool
+Connection manager
+
+🔵 Sơ đồ Singleton Design Pattern
+              (global access)
+                    |
+                    v
+        +-----------------------+
+        |      Singleton        |
+        |-----------------------|
+        | - instance (static)   |
+        | - constructor (private)
+        |-----------------------|
+        | + GetInstance()       |
+        +----------+------------+
+                   |
+                   | (create 1 lần duy nhất)
+                   v
+            [ Singleton Object ]
+
+🔄 Luồng hoạt động
+Client 1 ----\
+              \
+Client 2 ------> Singleton.GetInstance() ----> trả về cùng 1 object
+              /
+Client 3 ----/
+
+code ví dụ c#
+
+public class Singleton
+{
+    private static Singleton instance;
+
+    private Singleton() { } // chặn new từ bên ngoài
+
+    public static Singleton GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+var s1 = Singleton.GetInstance();
+var s2 = Singleton.GetInstance();
+
+Console.WriteLine(s1 == s2); // true
+
+👉 Singleton = “Chỉ có 1 object + dùng chung toàn hệ thống”
