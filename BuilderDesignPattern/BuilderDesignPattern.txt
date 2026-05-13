@@ -1,0 +1,56 @@
+Builder Design Pattern 
+- Builder Design Pattern là một creational design pattern (mẫu thiết kế khởi tạo) dùng để tạo object phức tạp từng bước một, thay vì tạo tất cả trong constructor.
+👉 Ý tưởng chính:
+- Tách quá trình xây dựng object ra khỏi biểu diễn của object
+- Cho phép tạo ra nhiều “phiên bản” khác nhau của object từ cùng một quy trình
+
+Những trường hợp sử dụng Builder Design Pattern
+✔️ Dùng khi:
+Object có nhiều tham số (>= 4–5)
+Có nhiều optional field
+Constructor bắt đầu khó đọc
+Muốn tạo object theo nhiều bước
+Object cần immutable
+Cần build object phức tạp (VD: config, query, request...)
+
+🧪 Ví dụ cụ thể 
+class User {
+    public string Name;
+    public int Age;
+    public string Address;
+
+    public class Builder {
+        private User user = new User();
+
+        public Builder SetName(string name) {
+            user.Name = name;
+            return this;
+        }
+
+        public Builder SetAge(int age) {
+            user.Age = age;
+            return this;
+        }
+
+        public Builder SetAddress(string address) {
+            user.Address = address;
+            return this;
+        }
+
+        public User Build() {
+            return user;
+        }
+    }
+}
+
+var user = new User.Builder()
+    .SetName("Quan")
+    .SetAge(20)
+    .SetAddress("Ha Noi")
+    .Build();
+
+🔑 Tổng kết
+Builder = xây object từng bước
+Giải quyết: constructor dài, khó đọc
+Lợi ích: rõ ràng, linh hoạt, dễ maintain
+Dùng khi: object phức tạp, nhiều option

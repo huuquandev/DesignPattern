@@ -1,0 +1,98 @@
+Adapter Design Pattern
+ - Adapter Design Pattern là một Structural Design Pattern dùng để:
+
+Chuyển đổi interface của một class thành interface khác mà client mong muốn.
+Nói đơn giản:
+
+Hệ thống của bạn đang dùng chuẩn A
+Nhưng class/thư viện bên ngoài lại dùng chuẩn B
+Adapter sẽ đứng ở giữa để “dịch” từ B → A
+
+Nó giống như:
+
+Cục chuyển đổi ổ điện
+Adapter HDMI → VGA
+Sạc Type-C → Jack 3.5
+
+Thiết bị không tương thích trực tiếp, nên cần một lớp trung gian.
+
+Những trường hợp sử dụng Adapter Pattern
+
+1. Tích hợp thư viện bên thứ 3
+Ví dụ:
+SDK thanh toán
+API vận chuyển
+OAuth login
+
+2. Tái sử dụng code legacy
+Class cũ không đúng interface hiện tại.
+
+3. Chuẩn hóa nhiều hệ thống khác nhau
+Ví dụ:
+Momo -> sendMoney()   |
+Visa -> makePayment() | -> Chuẩn hóa thành: pay()
+Paypal -> transfer()  |
+
+
+Cấu trúc Adapter Pattern
+      Client
+        ↓
+  Target Interface
+        ↓
+     Adapter
+        ↓
+     Adaptee
+
+1. Interface hệ thống mong muốn
+interface PaymentService {
+    void pay(int amount);
+}
+2. SDK bên ngoài (không sửa được)
+class MomoSDK {
+    public void sendMoney(int money) {
+        System.out.println("Paid by Momo: " + money);
+    }
+}
+3. Adapter
+class MomoAdapter implements PaymentService {
+
+    private MomoSDK momoSDK;
+
+    public MomoAdapter(MomoSDK momoSDK) {
+        this.momoSDK = momoSDK;
+    }
+
+    @Override
+    public void pay(int amount) {
+        momoSDK.sendMoney(amount);
+    }
+}
+4. Client sử dụng
+public class Main {
+    public static void main(String[] args) {
+
+        MomoSDK momoSDK = new MomoSDK();
+
+        PaymentService paymentService =
+                new MomoAdapter(momoSDK);
+
+        paymentService.pay(1000);
+    }
+}
+Kết quả
+Paid by Momo: 1000
+Điều gì đang xảy ra?
+
+Client gọi:
+
+paymentService.pay(1000);
+
+Nhưng thực tế:
+
+pay()
+   ↓
+Adapter
+   ↓
+sendMoney()
+
+👉 Adapter Pattern = Một lớp trung gian giúp 2 interface không tương thích có thể làm việc với nhau.

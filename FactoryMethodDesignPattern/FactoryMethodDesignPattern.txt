@@ -1,0 +1,182 @@
+Factory Method Design Pattern
+ - Factory Method Pattern là một creational pattern (mẫu khởi tạo), cho phép bạn tạo object thông qua một method (factory method) thay vì gọi new trực tiếp.
+ 👉 Nói đơn giản: Thay vì new Dog(), new Cat() → bạn gọi createAnimal() và nó tự quyết định tạo cái gì.
+
+Những trường hợp sử dụng Factory Method Design Pattern
+
+👉 Dùng khi:
+✔ Không biết trước object cụ thể
+Ví dụ:
+đọc config → tạo object tương ứng
+✔ Có nhiều loại object cùng interface
+Ví dụ:
+Payment: CreditCard, PayPal, Momo
+✔ Muốn tách logic tạo object
+Ví dụ:
+framework, thư viện
+✔ Muốn cho class con quyết định object
+👉 đây là điểm cốt lõi của Factory Method
+
+Cấu trúc của Factory Method
+Có 4 thành phần chính:
+
+1. Product (interface)
+interface Animal {
+    void speak();
+}
+
+2. Concrete Product
+class Dog implements Animal {
+    public void speak() {
+        System.out.println("Woof");
+    }
+}
+
+class Cat implements Animal {
+    public void speak() {
+        System.out.println("Meow");
+    }
+}
+
+3. Creator (Factory cha)
+abstract class AnimalFactory {
+    abstract Animal createAnimal();
+
+    public void makeSound() {
+        Animal animal = createAnimal();
+        animal.speak();
+    }
+}
+
+4. Concrete Creator (Factory con)
+class DogFactory extends AnimalFactory {
+    public Animal createAnimal() {
+        return new Dog();
+    }
+}
+
+class CatFactory extends AnimalFactory {
+    public Animal createAnimal() {
+        return new Cat();
+    }
+}
+
+5. Cách dùng
+AnimalFactory factory = new DogFactory();
+factory.makeSound(); // Woof
+
+factory = new CatFactory();
+factory.makeSound(); // Meow
+
+
+👉 Client không cần biết Dog hay Cat
+
+👉 Factory Method = “Đừng new trực tiếp → hãy để class khác tạo giúp bạn”
+
+
+Abstract Factory Design Pattern
+nếu Factory Method là “tạo 1 loại object”, thì Abstract Factory là:
+
+🔥 “tạo cả họ object liên quan với nhau (family of objects)”
+- Abstract Factory = Factory của nhiều Factory
+👉 Ý tưởng: Tạo ra các object thuộc cùng 1 “hệ” (family) mà đảm bảo chúng tương thích
+
+1. Abstract Factory
+interface GUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+
+2. Concrete Factory
+class LightFactory implements GUIFactory {
+    public Button createButton() {
+        return new LightButton();
+    }
+
+    public Checkbox createCheckbox() {
+        return new LightCheckbox();
+    }
+}
+
+class DarkFactory implements GUIFactory {
+    public Button createButton() {
+        return new DarkButton();
+    }
+
+    public Checkbox createCheckbox() {
+        return new DarkCheckbox();
+    }
+}
+
+3. Product
+interface Button {
+    void render();
+}
+
+interface Checkbox {
+    void render();
+}
+
+4. Concrete Product
+class LightButton implements Button {}
+class DarkButton implements Button {}
+
+class LightCheckbox implements Checkbox {}
+class DarkCheckbox implements Checkbox {}
+
+🎯 5. Cách dùng 
+GUIFactory factory;
+
+if (theme.equals("LIGHT")) {
+    factory = new LightFactory();
+} else {
+    factory = new DarkFactory();
+}
+
+Button btn = factory.createButton();
+Checkbox cb = factory.createCheckbox();
+
+💥 6. Điểm QUAN TRỌNG nhất
+
+👉 Sau khi chọn factory:
+
+factory = new LightFactory();
+
+
+👉 TẤT CẢ object tạo ra đều là Light:
+
+LightButton
+LightCheckbox
+
+
+✔ Không thể bị lệch hệ
+
+🔥 7. Khi thêm hệ mới (ví dụ Blue theme)
+
+Bạn chỉ cần:
+
+class BlueFactory implements GUIFactory {
+    public Button createButton() {
+        return new BlueButton();
+    }
+
+    public Checkbox createCheckbox() {
+        return new BlueCheckbox();
+    }
+}
+
+❗ KHÔNG cần sửa:
+Code UI ❌
+Business logic ❌
+
+👉 chỉ thêm class mới
+
+🧠 8. So sánh với Factory Method
+|          | Factory Method | Abstract Factory       |
+| -------- | -------------- | ---------------------- |
+| Tạo      | 1 object       | nhiều object liên quan |
+| Mục tiêu | tách việc tạo  | đảm bảo tính đồng bộ   |
+| Ví dụ    | Payment        | UI theme               |
+
+❗ Nếu Factory Method là “tạo 1 món ăn”
+👉 Abstract Factory là “tạo cả combo menu”

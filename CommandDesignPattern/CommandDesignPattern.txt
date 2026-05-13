@@ -1,0 +1,105 @@
+Command Design Pattern
+- Command Pattern là một behavioral design pattern dùng để đóng gói một request (yêu cầu/thao tác) thành một object riêng biệt.
+  Pattern này giúp tách biệt đối tượng gửi yêu cầu (Invoker) với đối tượng thực hiện yêu cầu (Receiver).
+
+Thay vì gọi trực tiếp method của object:
+
+light.turnOn();
+
+Command Pattern sẽ đóng gói hành động đó thành một command object:
+
+Command cmd = new TurnOnLightCommand(light);
+cmd.execute();
+
+Những trường hợp sử dụng Command Pattern
+
+1. Muốn đóng gói action thành object
+Ví dụ:
+- menu action
+- button action
+- keyboard shortcut
+2. Cần Undo/Redo
+- Rất phổ biến.
+3. Cần queue task/background job
+4. Cần log/history action
+5. Cần macro command
+6. Muốn giảm coupling
+
+Cấu trúc Command Pattern
+1. Command interface
+interface Command {
+    void execute();
+}
+
+2. Concrete Command
+class TurnOnLightCommand implements Command {
+    private Light light;
+
+    public TurnOnLightCommand(Light light) {
+        this.light = light;
+    }
+
+    public void execute() {
+        light.turnOn();
+    }
+}
+
+3. Receiver
+Object thực sự làm việc.
+class Light {
+    void turnOn() {
+        System.out.println("Light ON");
+    }
+}
+
+4. Invoker
+Object gọi command.
+class RemoteControl {
+    private Command command;
+
+    void setCommand(Command command) {
+        this.command = command;
+    }
+
+    void pressButton() {
+        command.execute();
+    }
+}
+
+5. Client
+public class Main {
+    public static void main(String[] args) {
+
+        Light light = new Light();
+
+        Command command = new TurnOnLightCommand(light);
+
+        RemoteControl remote = new RemoteControl();
+
+        remote.setCommand(command);
+
+        remote.pressButton();
+    }
+}
+
+Luồng hoạt động
+       Client
+         ↓
+     Tạo Command
+         ↓
+    Đưa cho Invoker
+         ↓
+  Invoker gọi execute()
+         ↓
+  Command gọi Receiver
+
+👉  Command Pattern: Biến hành động thành object
+    để có thể:
+    truyền đi
+    lưu lại
+    queue
+    undo
+    redo
+    log
+    macro
+    tách biệt người gọi và người thực hiện.

@@ -1,0 +1,123 @@
+Proxy Design Pattern 
+- Proxy Design Pattern là một design pattern thuộc nhóm Structural Patterns.
+- Proxy tạo ra một đối tượng đại diện (proxy object) đứng giữa client và object thật (real object).
+  Thay vì client truy cập trực tiếp object thật, nó sẽ đi qua proxy.
+
+Ý tưởng cốt lõi
+
+Ví dụ thực tế:
+
+Bạn muốn gặp giám đốc.
+Nhưng không phải ai cũng được gặp trực tiếp.
+Bạn phải đi qua:
+lễ tân
+trợ lý
+bảo vệ
+
+Những người này đóng vai trò:
+
+kiểm tra quyền
+ghi log
+kiểm soát truy cập
+trì hoãn việc gọi thật
+cache dữ liệu
+
+→ Đây chính là tư tưởng của Proxy.
+
+Những trường hợp sử dụng Proxy Design Pattern 
+
+object tạo tốn tài nguyên
+cần lazy loading
+cần authentication/authorization
+cần cache
+cần log
+cần remote call
+muốn kiểm soát truy cập object
+
+
+Cấu trúc Proxy Pattern
+Client
+   |
+   v
+Proxy -------> RealSubject
+            gọi thật khi cần
+
+Thành phần chính
+1. Subject (interface chung)
+Định nghĩa hành vi chung.
+interface Image {
+    void display();
+}
+
+2. RealSubject
+Object thật chứa logic chính.
+class RealImage implements Image
+
+3. Proxy
+Đối tượng đại diện.
+class ProxyImage implements Image
+Proxy sẽ:
+giữ reference tới RealSubject
+kiểm soát việc gọi
+
+Các loại Proxy phổ biến
+1. Virtual Proxy
+Mục đích
+Lazy loading object nặng.
+Ví dụ:
+ảnh lớn
+video
+database connection
+
+2. Protection Proxy
+Mục đích
+Kiểm tra quyền truy cập.
+
+if(user.isAdmin())
+
+class DocumentProxy implements Document {
+
+    private RealDocument doc;
+    private User user;
+
+    public void open() {
+
+        if(user.isAdmin()) {
+            doc.open();
+        } else {
+            System.out.println("Access denied");
+        }
+    }
+}
+
+3. Remote Proxy
+Mục đích
+Đại diện cho object ở server khác.
+Client gọi như object local.
+Ví dụ:
+RMI
+RPC
+gRPC
+Web Service
+
+4. Caching Proxy
+Mục đích
+Cache kết quả để tránh gọi lại.
+Ví dụ:
+if(cache.contains(id))
+    return cache.get(id);
+
+5. Logging Proxy
+Mục đích
+Log request/response.
+Ví dụ:
+System.out.println("API called");
+
+Proxy là: Một object đại diện đứng giữa client và object thật để kiểm soát việc truy cập.
+Nó giúp:
+lazy loading
+authentication
+caching
+logging
+remote access
+performance optimization

@@ -1,0 +1,154 @@
+Facade Design Pattern
+- Facade Design Pattern là một Structural Design Pattern dùng để tạo ra một lớp trung gian đơn giản (Facade) 
+  che giấu sự phức tạp của nhiều class/hệ thống con phía bên dưới.
+  Thay vì client phải làm việc trực tiếp với nhiều object phức tạp, client chỉ cần gọi qua một “cửa vào duy nhất”.
+  Facade = “mặt tiền”, “cổng giao tiếp đơn giản”.
+
+Những trường hợp sử dụng Facade Design Pattern
+1. Hệ thống quá phức tạp
+Ví dụ:
+Payment system
+Email system
+Video processing
+Authentication flow
+
+2. Có nhiều bước phải gọi theo thứ tự
+Ví dụ:
+Khởi tạo server
+Mở transaction
+Thanh toán
+Deploy project
+
+3. Muốn giảm coupling giữa client và subsystem
+Client không nên biết:
+database
+cache
+queue
+logger
+validator
+
+4. Muốn tạo API dễ dùng
+Ví dụ framework thường dùng Facade:
+Spring
+Laravel
+Hibernate
+
+Ý tưởng cốt lõi
+Trước Facade
+Client
+ ├── Class A
+ ├── Class B
+ ├── Class C
+ ├── Class D
+ └── Class E
+
+Client phụ thuộc trực tiếp vào rất nhiều class.
+
+Sau Facade
+Client
+   │
+Facade
+   │
+ ├── Class A
+ ├── Class B
+ ├── Class C
+ ├── Class D
+ └── Class E
+
+Client chỉ làm việc với Facade.
+
+Ví dụ thực tế 
+đặt đồ ăn
+
+Không dùng Facade
+Client phải tự làm:
+- kiểm tra menu
+- tạo đơn hàng
+- tính tiền
+- thanh toán
+- gọi shipper
+- gửi email
+Code:
+menuService.getMenu();
+orderService.createOrder();
+paymentService.pay();
+shippingService.ship();
+emailService.send();
+
+Dùng Facade
+foodFacade.orderFood();
+Facade xử lý tất cả.
+
+Ví dụ code 
+Bước 1 — Các subsystem
+class CPU {
+    void start() {
+        System.out.println("CPU started");
+    }
+}
+
+class Memory {
+    void load() {
+        System.out.println("Memory loaded");
+    }
+}
+
+class HardDrive {
+    void read() {
+        System.out.println("Hard drive reading");
+    }
+}
+Bước 2 — Facade
+class ComputerFacade {
+
+    private CPU cpu;
+    private Memory memory;
+    private HardDrive hardDrive;
+
+    public ComputerFacade() {
+        cpu = new CPU();
+        memory = new Memory();
+        hardDrive = new HardDrive();
+    }
+
+    public void startComputer() {
+        cpu.start();
+        memory.load();
+        hardDrive.read();
+
+        System.out.println("Computer started");
+    }
+}
+Bước 3 — Client
+public class Main {
+    public static void main(String[] args) {
+
+        ComputerFacade computer = new ComputerFacade();
+
+        computer.startComputer();
+    }
+}
+Kết quả
+CPU started
+Memory loaded
+Hard drive reading
+Computer started
+
+Nếu KHÔNG dùng Facade
+Client phải:
+CPU cpu = new CPU();
+Memory memory = new Memory();
+HardDrive hardDrive = new HardDrive();
+cpu.start();
+memory.load();
+hardDrive.read();
+Client biết quá nhiều chi tiết.
+
+Facade Pattern = Client -> Facade -> Hệ thống phức tạp
+
+Facade hoạt động như:
+“quầy lễ tân”
+“cửa vào”
+“API đơn giản”
+
+để che giấu sự phức tạp của nhiều subsystem phía sau.

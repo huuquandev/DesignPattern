@@ -1,0 +1,89 @@
+Decorator Design Pattern
+- Decorator Design Pattern là một Structural Design Pattern (mẫu thiết kế cấu trúc) 
+  cho phép bạn thêm hành vi (behavior) vào object một cách linh hoạt tại runtime mà không cần sửa đổi code gốc.
+  Nó hoạt động bằng cách "bọc" (wrap) object bên trong một object khác (decorator), giống như bạn mặc thêm áo khoác bên ngoài.
+
+Những trường hợp sử dụng Decorator Design Pattern
+✔️ 1. Cần thêm chức năng động
+Ví dụ:
+Logging
+Caching
+Authentication
+✔️ 2. Không muốn sửa class gốc
+✔️ 3. Có nhiều tổ hợp tính năng
+
+🧠 Ý tưởng chính
+
+    Coffee (interface)
+            ↑
+    SimpleCoffee (class gốc)
+            ↑
+    Decorator (abstract)
+            ↑
+       MilkDecorator
+       SugarDecorator
+       CaramelDecorator
+
+👉 Mỗi decorator:
+Nhận vào 1 object Coffee
+Gọi lại method của object đó
+Sau đó cộng thêm chức năng của mình
+
+
+🧪 Ví dụ cụ thể (Java)
+1. Interface
+interface Coffee {
+    double cost();
+}
+
+2. Class gốc
+class SimpleCoffee implements Coffee {
+    public double cost() {
+        return 5;
+    }
+}
+
+3. Decorator base
+abstract class CoffeeDecorator implements Coffee {
+    protected Coffee coffee;
+
+    public CoffeeDecorator(Coffee coffee) {
+        this.coffee = coffee;
+    }
+
+    public double cost() {
+        return coffee.cost();
+    }
+}
+
+4. Decorator cụ thể
+class MilkDecorator extends CoffeeDecorator {
+    public MilkDecorator(Coffee coffee) {
+        super(coffee);
+    }
+
+    public double cost() {
+        return super.cost() + 2;
+    }
+}
+
+class SugarDecorator extends CoffeeDecorator {
+    public SugarDecorator(Coffee coffee) {
+        super(coffee);
+    }
+
+    public double cost() {
+        return super.cost() + 1;
+    }
+}
+
+5. Sử dụng
+Coffee c1 = new MilkDecorator(new SimpleCoffee());
+Coffee c2 = new SugarDecorator(new MilkDecorator(new SimpleCoffee()));
+Coffee c3 = new CaramelDecorator(
+                new SugarDecorator(
+                    new MilkDecorator(new SimpleCoffee())
+                ));
+
+
+👉 Decorator = bọc object để thêm chức năng mà không sửa code gốc

@@ -1,8 +1,8 @@
 Singleton Design Pattern
-- Singleton là một design pattern đảm bảo rằng:
-  Một class chỉ có đúng 1 instance (1 object duy nhất)
-  Và cung cấp một điểm truy cập toàn cục (global access) tới instance đó
- 👉 Hiểu đơn giản: “Trong toàn bộ chương trình, class này chỉ được tạo đúng 1 object thôi.”
+- Singleton là Design Pattern thuộc nhóm Creational (khởi tạo) dùng để đảm bảo:
+  Một class chỉ có duy nhất 1 object
+  Và cung cấp điểm truy cập toàn cục (global access) tới object đó
+
 
 Những trường hợp sử dụng Singleton Design Pattern
 - Chỉ cần 1 instance duy nhất

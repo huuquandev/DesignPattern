@@ -11,6 +11,7 @@ namespace ObserverDesignPattern
             var videoData = new VideoData();
 
             var emailNotifier = new EmailNotifier(videoData);
+
             var phoneNotifier = new PhoneNotifier(videoData);
             var youtubeNotifier = new YoutubeNotifier(videoData);
 
